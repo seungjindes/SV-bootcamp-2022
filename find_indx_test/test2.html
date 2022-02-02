@@ -1,0 +1,40 @@
+
+<meta charset="utf-8">
+<input type="hidden" id="hid_search">
+<html>
+    <head>
+        <title>what is cat?</title>
+    </head>
+    
+    <body>
+        <p>cat is animal</p>
+        <p>but he doesnt want</p>
+        <p>ads is good</p>
+    </body>
+    <script>
+        function doSearch(text,color="yellow") {
+     
+            if (window.find && window.getSelection) { //크롬
+                document.designMode = "on";
+                var sel = window.getSelection();
+                sel.collapse(document.body, 0);
+                while (window.find(text)) {
+                    document.execCommand("HiliteColor", false, color);
+                    sel.collapseToEnd();
+                }
+                document.designMode = "off";
+            } 
+            else if (document.body.createTextRange) { //ie
+                var textRange = document.body.createTextRange();
+                while (textRange.findText(text)) {
+                    textRange.execCommand("BackColor", false, color);
+                    textRange.collapse(false);
+                }
+            }
+        }
+        doSearch('cat')
+        doSearch('is')
+        
+    </script>
+</html>
+

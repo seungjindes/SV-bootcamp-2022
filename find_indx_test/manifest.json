@@ -1,0 +1,21 @@
+{
+    "manifest_version": 2,
+   
+    "name": "word_window",
+    "description": "word_mean",
+    "version": "2.0",
+   
+    "browser_action": {
+      "default_icon": "logo.png",
+      "default_popup": "popup.html"
+    },
+
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+      },
+
+    "permissions": [
+      "activeTab"
+    ]
+  }
