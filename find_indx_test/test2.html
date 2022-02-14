@@ -2,39 +2,82 @@
 <meta charset="utf-8">
 <input type="hidden" id="hid_search">
 <html>
+    <style>
+        .tooltiplink{
+            position: relative;
+            color: rgb(87, 171, 219); 
+            border-radius: 10px;
+            border: 3px solid #eee;
+            padding: 3px;
+            box-sizing: border-box;
+        }
+        .tooltiplink[data-tooltip]:not([data-tooltip=""])::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            background-color: rgba(0,0,0,0.5);
+            color: #fff;
+            padding: 10px 7px;
+            border-radius: 10px;
+            max-width: 300px;
+            width: 250%;
+            left: 25%;
+            bottom: 120%;
+            opacity: 0;
+            transition: all 0.5s linear;
+        }
+        .tooltiplink[data-tooltip]:not([data-tooltip=""])::after {
+            content: '';
+            border-width: 6px;
+            border-style: solid;
+            border-color: transparent;
+            border-top-color: rgba(0,0,0,0.5);
+            width: 0;
+            height: 0;
+            display: inline-block;
+            position: absolute;
+            left: 50%;
+            bottom: 80%;
+            transform: translate(-50%, 0);
+            opacity: 0;
+            transition: all 0.5s linear;
+        }
+        .tooltiplink:hover[data-tooltip]:not([data-tooltip=""])::before
+
+        , .tooltiplink:hover[data-tooltip]:not([data-tooltip=""])::after {
+            opacity: 1;
+        }
+
+        </style>
     <head>
         <title>what is cat?</title>
     </head>
     
     <body>
+        
         <p>cat is animal</p>
         <p>but he doesnt want</p>
-        <p>ads is good</p>
+        <div>ads is good</div>
+
     </body>
+
     <script>
-        function doSearch(text,color="yellow") {
-     
+        function doSearch(text) {
             if (window.find && window.getSelection) { //크롬
                 document.designMode = "on";
                 var sel = window.getSelection();
                 sel.collapse(document.body, 0);
                 while (window.find(text)) {
-                    document.execCommand("HiliteColor", false, color);
+
+                    document.execCommand("insertHTML" , false , "<span class = 'tooltiplink' , data-tooltip='new word'>new</span>")
                     sel.collapseToEnd();
                 }
                 document.designMode = "off";
             } 
-            else if (document.body.createTextRange) { //ie
-                var textRange = document.body.createTextRange();
-                while (textRange.findText(text)) {
-                    textRange.execCommand("BackColor", false, color);
-                    textRange.collapse(false);
-                }
-            }
         }
-        doSearch('cat')
+        doSearch('good')
+        doSearch('he')
         doSearch('is')
-        
+ 
     </script>
 </html>
 
