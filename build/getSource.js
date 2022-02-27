@@ -1,33 +1,36 @@
-import styled from 'styled-components';
-
-
-const tooltip = styled.span
-    position : relative;
-    color : rgb(87, 171, 219); 
-
-function get_url(){
-    var newURL = window.location.protocol + "//" + window.location.host + "/" + window.location.pathname;
-    console.log("current url");
-    return newURL
-}
-
-chrome.extension.sendMessage({
-    action: "getSource",
-    source: get_url(document.body)
-});
-
-
-function doSearch(text) {
+/* global chrome */
+function doSearch(text,meaning) {
+    var count = 0;
     if (window.find && window.getSelection) { 
         document.designMode = "on";
         var sel = window.getSelection();
         sel.collapse(document.body, 0);
         while (window.find(text)) {
-            // document.execCommand("insertHTML" , false , "<span className = 'tooltiplink' , datatooltip='new word'>new</span>")
-            document.execCommand("insertHTML" , false , "<tooltip>new</tooltip>")
+            count += 1
+            document.execCommand("insertHTML" , false , `<span
+            onMouseOver="this.children[0].style.display = 'inline-block'"
+            onMouseOut="this.children[0].style.display = 'none'"
+            id = "${count}";
+            style="position: relative;
+            color:black;
+            display:inline-block; background-color:#DCCBED"
+            >${text}</span>`)
+
             sel.collapseToEnd();
         }
         document.designMode = "off";
-    } 
+    }
+    window.scrollTo(0,0);
+    while(count){
+        let element = document.createElement("span");
+        element.innerText = meaning
+        element.setAttribute("style", "display: none; background-color: rgba(0,0,0,0.5); padding: 10px; position: absolute; z-index: 1000; width:200px; color: #fff; border-radius: 10px; left: 25%; bottom: 120%; opacity: 1; font-size: medium; font-weight: normal; height:100px; text-align:left;")
+        const slangSpan = document.getElementById(count.toString());
+        if (slangSpan){
+            console.log(slangSpan);
+            slangSpan.appendChild(element);
+        }
+        console.log(count);
+        count -= 1;
+    }
 }
-doSearch("is")
